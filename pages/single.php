@@ -1,12 +1,19 @@
 <?php
 // Page d'un article
 
+use App\App;
 use App\Table\Article;
 
 /** @var Article */
-$post = $db->prepare('SELECT * FROM articles WHERE id= ?', [$_GET['id']], 'App\Table\Article', 1);
+$post = Article::find($_GET['id']);
+if($post === false) {
+    App::notFound();
+}
+App::setTitle($post->titre);
 ?>
 
-<h2><?= $post->titre; ?></h2>
+<h1><?= $post->titre; ?></h1>
+
+<p><em><?= $post->categorie ?></em></p>
 
 <p><?= $post->contenu; ?></p>

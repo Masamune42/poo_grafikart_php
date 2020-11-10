@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Table\Article;
 use PDO;
 
 class Database
@@ -30,14 +29,14 @@ class Database
      *
      * @return PDO
      */
-    public function getPDO(): PDO
+    public function getPDO()
     {
         if ($this->pdo === null) {
             $pdo = new PDO("mysql:dbname={$this->db_name};host={$this->db_host};charset=utf8", $this->db_user, $this->db_pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo = $pdo;
         }
-        return $pdo;
+        return $this->pdo;
     }
 
     /**
@@ -47,10 +46,15 @@ class Database
      * @param string $class_name Nom de la classe utilisée
      * @return array()
      */
-    public function query($statement, $class_name)
+    public function query($statement, $class_name, $one = false)
     {
-        $res = $this->getPDO()->query($statement);
-        $data = $res->fetchAll(PDO::FETCH_CLASS, $class_name);
+        $req = $this->getPDO()->query($statement);
+        $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        if ($one) {
+            $data = $req->fetch();
+        } else {
+            $data = $req->fetchAll();
+        }
         return $data;
     }
 

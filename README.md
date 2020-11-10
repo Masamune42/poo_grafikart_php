@@ -2,7 +2,12 @@
 ## Description
 Blog en PHP avec le tutoriel : La POO en PHP de Grafikart
 <br>
-<small>/!\ Tuto plus vieux que celui de l'autre Blog (blog_php_grafikart) mais intéressant de voir / revoir des points</small>
+<small>
+/!\ Tuto plus vieux que celui de l'autre Blog (blog_php_grafikart) mais intéressant de voir / revoir des points. Malgré ça, la structure utilisée est plus ancienne et donc souvent plus complexe. Pour cela, revoir plutôt le projet blog_php_grafikart => Apprendre le PHP (Travaux Pratique 2
+)
+<br>
+Ce tuto aborde les design patterns, c'est le point le plus intéressant à voir et comprendre.
+</small>
 
 ## Tips
 - Fonction magique __get

@@ -2,7 +2,6 @@
 
 require '../app/Autoloader.php';
 
-use App\Database;
 // On déclare la time zone utilisée
 date_default_timezone_set('Europe/Paris');
 // On s'enregistre à l'autoloader
@@ -15,15 +14,14 @@ if (isset($_GET['p'])) {
     $p = 'home';
 }
 
-// Connexion à la BDD blog
-$db = new Database('blog');
-
 // On met en buffer la page demandée
 ob_start();
 if ($p === 'home') {
     require '../pages/home.php';
 } elseif ($p === 'article') {
     require '../pages/single.php';
+} elseif ($p === 'categorie') {
+    require '../pages/categorie.php';
 }
 $content = ob_get_clean();
 // On appelle la page de layout
