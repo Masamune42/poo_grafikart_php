@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Core;
 
 class Config
 {
@@ -12,17 +12,17 @@ class Config
      *
      * @return self Instance de la classe
      */
-    public static function getInstance()
+    public static function getInstance($file)
     {
         if (is_null(self::$_instance)) {
-            self::$_instance = new Config();
+            self::$_instance = new Config($file);
         }
         return self::$_instance;
     }
 
-    public function __construct()
+    public function __construct($file)
     {
-        $this->settings = require __DIR__ . '/config/config.php';
+        $this->settings = require($file);
     }
 
     /**

@@ -1,8 +1,7 @@
 <?php
 
-namespace App;
-
-use App\Database\MysqlDatabase;
+use Core\Config;
+use Core\Database\MysqlDatabase;
 
 class App
 {
@@ -23,6 +22,17 @@ class App
             self::$_instance = new App();
         }
         return self::$_instance;
+    }
+
+    public static function load()
+    {
+        session_start();
+        require ROOT . '/app/Autoloader.php';
+        // On s'enregistre à l'autoloader
+        App\Autoloader::register();
+        require ROOT . '/core/Autoloader.php';
+        // On s'enregistre à l'autoloader
+        Core\Autoloader::register();
     }
 
     public static function notFound()
@@ -50,8 +60,8 @@ class App
      */
     public function getDb()
     {
-        $config = Config::getInstance();
-        if(is_null($this->db_instance)) {
+        $config = Config::getInstance(ROOT . '/config/config.php');
+        if (is_null($this->db_instance)) {
             $this->db_instance = new MysqlDatabase($config->get('db_name'), $config->get('db_user'), $config->get('db_pass'), $config->get('db_host'));
         }
         return $this->db_instance;

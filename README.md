@@ -27,6 +27,8 @@ public function __get($key)
     return $this->$key;
 }
 ```
+## Refactoring
+- On crée un dossier "core" et on y déplace tout ce qui est générique dedans : Connexion à la BDD, Autoloader
 
 ## Design Patterns
 ### Singleton

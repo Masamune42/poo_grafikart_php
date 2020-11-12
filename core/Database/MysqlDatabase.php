@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Database;
+namespace Core\Database;
 
-use App\Database\Database;
 use PDO;
 
 class MysqlDatabase extends Database
