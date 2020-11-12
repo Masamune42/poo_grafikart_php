@@ -10,13 +10,12 @@ require '../app/Autoloader.php';
 date_default_timezone_set('Europe/Paris');
 // On s'enregistre à l'autoloader
 Autoloader::register();
-
-/** @var App */
+// On récupère l'instance de l'application
 $app = App::getInstance();
-$app->title = "Titre de test";
-$config = Config::getInstance();
-
-var_dump($app->title);
+// On récupère la table des articles
+$posts = $app->getTable('Posts');
+var_dump(App::getTable('Posts'));
+var_dump(App::getTable('Categories'));
 
 // Si "p" est en paramètre, alors on récupère sa valeur dans $p, sinon égal à 'home'
 // if (isset($_GET['p'])) {

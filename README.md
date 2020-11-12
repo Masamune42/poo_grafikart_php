@@ -59,3 +59,26 @@ public function __construct()
     $this->settings = require __DIR__ . '/config/config.php';
 }
 ```
+
+## Factory
+```PHP
+// Dans App.php on déclare une fonction qui permet d'appeler différentes tables
+/**
+ * Factory : permet d'appeler la Table dont le nom est passé en paramètre
+ *
+ * @param string $name Nom de la classe
+ * @return Table une table qui extends de Table
+ */
+public static function getTable($name)
+{
+    $class_name = '\\App\\Table\\' . ucfirst($name) . 'Table';
+    return new $class_name();
+}
+
+// On peut ensuite appeler cette fonction dans un autre fichier pour récupérer les tables voulues et utiliser les requêtes SQL associées
+// On récupère l'instance de l'application
+$app = App::getInstance();
+// On récupère la table des articles
+$posts = $app->getTable('Posts');
+$posts = $app->getTable('Categories');
+```
