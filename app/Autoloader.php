@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 /**
@@ -23,5 +24,4 @@ class Autoloader
     {
         require dirname(__DIR__) . '/' . $class . '.php';
     }
-
 }

@@ -29,8 +29,9 @@ public function __get($key)
 ```
 
 ## Design Patterns
-### Signleton
+### Singleton
 - Permet d'instancier une classe qu'une seule fois
+
 Actuellement on peut utiliser des classes static mais elles ne peuvent pas disposer de constructeur ET la notion d'héritage est compliquée.
 ```PHP
 // Config.php -> Class Config
@@ -81,4 +82,80 @@ $app = App::getInstance();
 // On récupère la table des articles
 $posts = $app->getTable('Posts');
 $posts = $app->getTable('Categories');
+```
+
+## Injection de dépendances
+- Problème : Si on prend la fonction "query()" dans Table.php qui faisait appel à la BDD et utilisait sur la BDD la fonction query avec une requête SQL. Du coup, on a les classes qui communiquent les unes avec les autres (Table <=> Database). Si je veux dissocier les classes les unes des autres c'est gênant, car pour que query() fonctionne dans Table.php, j'ai besoin nécessairement de la BDD : Impossible d'utiliser une classe sans une autre.
+- Solution : Injection de dépendances => Si une classe a besoin d'une autre, il faut l'injecter au moment de son constructeur ou au moment de l'appel des fonctions.
+```PHP
+// Dans index.php
+// Crée / récupère l'instance de App
+$app = App::getInstance();
+// On récupère la table des articles pour tous les récupérer
+$posts = $app->getTable('Posts');
+var_dump($posts->all());
+
+// Dans App.php
+/**
+ * Factory : permet d'appeler la Table dont le nom est passé en paramètre
+ *
+ * @param string $name Nom de la classe
+ * @return Table une table qui extends de Table
+ */
+public function getTable($name)
+{
+    $class_name = '\\App\\Table\\' . ucfirst($name) . 'Table';
+    // On utilise l'injection de dépendance directement dans la Factory
+    return new $class_name($this->getDb());
+}
+
+/**
+ * Effectue une connexion à la base de données et la garde en instance de classe
+ *
+ * @return MysqlDatabase Instance de la base de donnée
+ */
+public function getDb()
+{
+    $config = Config::getInstance();
+    // On récupère une instance de la base de données avec la configuration
+    if(is_null($this->db_instance)) {
+        $this->db_instance = new MysqlDatabase($config->get('db_name'), $config->get('db_user'), $config->get('db_pass'), $config->get('db_host'));
+    }
+    return $this->db_instance;
+}
+
+// Dans Table.php
+// Variable qui va stocker le base de données utilisée
+protected $db;
+
+/**
+ * Constructeur par défaut
+ *
+ * @param \App\Database\Database $db Base de données
+ */
+public function __construct(\App\Database\Database $db)
+{
+    // Injection de dépendance => on lie la BDD directement dans le constructeur
+    $this->db = $db;
+    if (is_null($this->table)) {
+        $parts = explode('\\', get_class($this));
+        $class_name = end($parts);
+        $this->table = strtolower(str_replace('Table', '', $class_name));
+    }
+}
+
+/**
+ * Récupère tous les articles
+ *
+ * @return PostsTable[] Tableau d'articles
+ */
+public function all()
+{
+    // On peut ensuite appeler la BDD dans n'importe quelle fonction
+    return $this->db->query('SELECT * FROM articles');
+}
+
+/*
+DANS CE CODE ON VOIT QUE SI ON CHANGE DE BDD IL FAUDRA LE CHANGER A 2 ENDROITS UNIQUEMENT => dans App->getDb() et dans le constructeur de Table.php
+*/
 ```

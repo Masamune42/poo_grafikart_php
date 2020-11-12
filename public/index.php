@@ -2,7 +2,7 @@
 
 use App\App;
 use App\Autoloader;
-use App\Config;
+use App\Table\PostsTable;
 
 require '../app/Autoloader.php';
 
@@ -10,13 +10,10 @@ require '../app/Autoloader.php';
 date_default_timezone_set('Europe/Paris');
 // On s'enregistre à l'autoloader
 Autoloader::register();
-// On récupère l'instance de l'application
 $app = App::getInstance();
-// On récupère la table des articles
+/** @var PostsTable */
 $posts = $app->getTable('Posts');
-var_dump(App::getTable('Posts'));
-var_dump(App::getTable('Categories'));
-
+var_dump($posts->all());
 // Si "p" est en paramètre, alors on récupère sa valeur dans $p, sinon égal à 'home'
 // if (isset($_GET['p'])) {
 //     $p = $_GET['p'];
