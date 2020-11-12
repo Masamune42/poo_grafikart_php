@@ -27,3 +27,35 @@ public function __get($key)
     return $this->$key;
 }
 ```
+
+## Design Patterns
+### Signleton
+- Permet d'instancier une classe qu'une seule fois
+Actuellement on peut utiliser des classes static mais elles ne peuvent pas disposer de constructeur ET la notion d'héritage est compliquée.
+```PHP
+// Config.php -> Class Config
+
+private $settings = [];
+private static $_instance;
+
+/**
+ * Singleton : crée ou récupère l'instance
+ *
+ * @return self Instance de la classe
+ */
+public static function getInstance()
+{
+    // Quand on instancie cette classe, on veut récupérer tous les options del a BDD : user_name, bdd_name...
+    if (is_null(self::$_instance)) { // S'il n'y a pas déjà une instance, on la crée
+        self::$_instance = new Config();
+    }
+    // Dans tous les cas, on retourne l'instance de la classe
+    return self::$_instance;
+}
+
+// En appelant le constructeur, on va récupérer le fichier config.php contenant la configuration dans un tableau
+public function __construct()
+{
+    $this->settings = require __DIR__ . '/config/config.php';
+}
+```
