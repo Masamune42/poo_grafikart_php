@@ -14,7 +14,7 @@
     <title><?= $app->title ?></title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand" href="index.php">Project name</a>
             </div>
         </div>
     </nav>

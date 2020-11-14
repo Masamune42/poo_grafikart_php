@@ -13,7 +13,7 @@ class PostEntity extends Entity
      */
     public function getUrl()
     {
-        return 'index.php?page=article&id=' . $this->id;
+        return 'index.php?page=posts.show&id=' . $this->id;
     }
 
     /**

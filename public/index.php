@@ -1,7 +1,6 @@
 <?php
 
 define('ROOT', dirname(__DIR__));
-var_dump(ROOT);
 require ROOT . '/app/App.php';
 
 App::load();
@@ -20,11 +19,11 @@ if (isset($_GET['page'])) {
 // On met en buffer la page demandée
 ob_start();
 if ($page === 'home') {
-    require ROOT . '/pages/articles/home.php';
-} elseif ($page === 'article') {
-    require ROOT . '/pages/articles/single.php';
-} elseif ($page === 'categorie') {
-    require ROOT . '/pages/articles/categorie.php';
+    require ROOT . '/pages/posts/home.php';
+} elseif ($page === 'posts.show') {
+    require ROOT . '/pages/posts/show.php';
+} elseif ($page === 'posts.category') {
+    require ROOT . '/pages/posts/category.php';
 }
 $content = ob_get_clean();
 // On appelle la page de layout
