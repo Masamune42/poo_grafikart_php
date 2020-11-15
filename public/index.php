@@ -28,3 +28,6 @@ if ($page === 'home') {
 $content = ob_get_clean();
 // On appelle la page de layout
 require '../pages/templates/default.php';
+
+// Test du QueryBuilder
+// $app->getTable('Demo')->index();

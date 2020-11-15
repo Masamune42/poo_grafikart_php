@@ -161,3 +161,57 @@ public function all()
 DANS CE CODE ON VOIT QUE SI ON CHANGE DE BDD IL FAUDRA LE CHANGER A 2 ENDROITS UNIQUEMENT => dans App->getDb() et dans le constructeur de Table.php
 */
 ```
+
+## Fluent
+```PHP
+// Class permettant de créer des requêtes SQL via des fonctions
+class QueryBuilder
+{
+    private $select = [];
+
+    private $conditions = [];
+
+    private $from = [];
+
+    public function select()
+    {
+        $this->select = func_get_args();
+        return $this;
+    }
+
+    public function where()
+    {
+        foreach (func_get_args() as $arg) {
+            $this->conditions[] = $arg;
+        }
+        return $this;
+    }
+
+    public function from($table, $alias)
+    {
+        if (is_null($alias))
+            $this->from[] = "$table";
+        else
+            $this->from[] = "$table AS $alias";
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return 'SELECT ' . implode(', ', $this->select)
+            . ' FROM ' . implode(', ', $this->from)
+            . ' WHERE ' . implode(' AND ', $this->conditions);
+    }
+}
+
+public function index()
+{
+    $query = new QueryBuilder();
+    // Toutes les fonctions utilisées sont fluent, elles renvoient this, donc elles peuvent être chainées
+    echo $query
+        ->select('id', 'titre', 'contenu')
+        ->where('Post.category_id = 1')
+        ->where('Post.date > NOW()')
+        ->from('articles', 'Post');
+}
+```
