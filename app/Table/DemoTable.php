@@ -2,15 +2,12 @@
 
 namespace App\Table;
 
-use Core\Database\QueryBuilder;
-
-class DemoTable extends QueryBuilder
+class DemoTable
 {
     public function index()
     {
-        $query = new QueryBuilder();
-        echo $query
-            ->select('id', 'titre', 'contenu')
+        require ROOT . '/Query.php';
+        echo \Query::select('id', 'titre', 'contenu')
             ->where('Post.category_id = 1')
             ->where('Post.date > NOW()')
             ->from('articles', 'Post')

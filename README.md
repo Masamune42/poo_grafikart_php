@@ -164,7 +164,7 @@ DANS CE CODE ON VOIT QUE SI ON CHANGE DE BDD IL FAUDRA LE CHANGER A 2 ENDROITS U
 
 ## Fluent
 ```PHP
-// Class permettant de créer des requêtes SQL via des fonctions
+// Classe permettant de créer des requêtes SQL via des fonctions
 class QueryBuilder
 {
     private $select = [];
@@ -203,7 +203,7 @@ class QueryBuilder
             . ' WHERE ' . implode(' AND ', $this->conditions);
     }
 }
-
+// Classe d'appel
 public function index()
 {
     $query = new QueryBuilder();
@@ -213,5 +213,42 @@ public function index()
         ->where('Post.category_id = 1')
         ->where('Post.date > NOW()')
         ->from('articles', 'Post');
+}
+```
+
+## Façade
+Permet de cacher la complexité du code à travers un appel static. Très présent dans Laravel.
+- Avantage : Si change de QueryBuilder dans la façade, cela permettra de le changer qu'à un seul endroit
+- Défaut : Cache le code source que l'on a derrière, rend la navigation et la recherche plus complexe
+```PHP
+class Query
+{
+    /**
+     * Méthode magique (PHP 5.3+) qui permet de rediriger vers QueryBuilder
+     *
+     * @param string $method Nom de la méthode à appeler
+     * @param array $arguments Arguments à passer à la méthode
+     * @return void
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        $query = new QueryBuilder();
+        // Méthode qui permet d'appeler la fonction d'une méthode avec des arguments
+        // Ex : méthode select de QueryBuilder avec les arguments
+        return call_user_func_array([$query, $method], $arguments);
+    }
+}
+// Classe d'appel
+class DemoTable
+{
+    public function index()
+    {
+        require ROOT . '/Query.php';
+        echo \Query::select('id', 'titre', 'contenu')
+            ->where('Post.category_id = 1')
+            ->where('Post.date > NOW()')
+            ->from('articles', 'Post')
+            ->getQuery();
+    }
 }
 ```

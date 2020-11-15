@@ -30,4 +30,4 @@ $content = ob_get_clean();
 require '../pages/templates/default.php';
 
 // Test du QueryBuilder
-// $app->getTable('Demo')->index();
+$app->getTable('Demo')->index();
