@@ -359,3 +359,13 @@ $flash->set('Il y a eu une erreur', 'danger');
 // Affichage du message flash sauvegardé
 <?= $flash->get(); ?>
 ```
+
+## Les traits
+Permet de gérer un système d'héritage multiple
+- Problème : L'héritage (extends) se fait de façon "verticale" => une classe va avoir un parent, qui peut avoir un parent, etc.
+- Solution : Utiliser des traits => en général ils définissent des comportements qui se terminent par exemple par "-able" (Rechargeable)
+- Avantage : Permet résoudre le problème de créer plusieurs classes presques copiées, ex : Moto, Voiture, Moto électrique, Voiture électrique => Moto, Voiture, Electrique (trait)
+- Inconvénients : Rend le code difficile à lire : Quel trait fait quoi et comment il fonctionne avec les autres? Par exemple : pour la fonction rouler() si on veut voir son fonctionnement on remonte dans les héritages classiques, mais comme il y a un des traits qui est utilisé, je vais donc voir comment est définie la fonction à l'intérieur de ceux-ci
+- Quand utiliser ou pas les traits :
+    - Héritage : Définition d'entité
+    - Trait : Comportement
