@@ -252,3 +252,110 @@ class DemoTable
     }
 }
 ```
+
+## Interfaces
+```PHP
+// Exemple d'implémentation d'interfaces
+// Interface qui défini les méthodes à utiliser
+interface SessionInterface
+{
+    public function get($key);
+
+    public function set($key, $value);
+
+    public function delete($key);
+}
+/**
+ * Classe de Session qui implemente SessionInterface
+ * Interfaces les plus utilisées :
+ * ArrayAccess => Permet d'accéder à un objet comme si c'était un tableau
+ * Iterator
+ * Count
+ */
+class Session implements SessionInterface, \Countable, \ArrayAccess
+{
+    public function __construct()
+    {
+        session_start();
+    }
+
+    public function get($key)
+    {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        } else {
+            return null;
+        }
+    }
+
+    public function set($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    public function delete($key)
+    {
+        unset($_SESSION[$key]);
+    }
+
+    // On redéfini la méthode count() implémentée par Countable
+    public function count()
+    {
+        return 4;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        return $this->set($offset, $value);
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($_SESSION[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        return $this->delete($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+}
+// Classe permettant de générer un message flash
+class Flash
+{
+    private $session;
+
+    const KEY = 'gflash';
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
+    public function set($message, $type = 'success')
+    {
+        $this->session->set(self::KEY, [
+            'message' => $message,
+            'type' => $type
+        ]);
+    }
+
+    public function get()
+    {
+        $flash = $this->session->get(self::KEY);
+        $this->session->delete(self::KEY);
+        return "<div class='alert alert-{$flash['type']}'>{$flash['message']}</div>";
+    }
+}
+// Dans index.php
+// Création de l'objet flash
+$flash = new Grafikart\Flash($session);
+// On peut ensuite utiliser la fonction set() de flash pour sauvegarder un message flash
+$flash->set('Il y a eu une erreur', 'danger');
+// Affichage du message flash sauvegardé
+<?= $flash->get(); ?>
+```

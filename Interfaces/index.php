@@ -3,13 +3,14 @@
 require "vendor/autoload.php";
 
 $session = new Grafikart\Session();
-// $cookie = new Grafikart\Cookie();
+$cookie = new Grafikart\Cookie();
+$flash = new Grafikart\Flash($session);
 // $flash = new Grafikart\Flash($cookie);
-var_dump(count($session));
-$session->set('animal', 'chat');
-var_dump($session->get('animal'));
-var_dump($session->offsetGet('animal'));
-exit;
+// var_dump(count($session));
+// $session->set('animal', 'chat');
+// var_dump($session->get('animal'));
+// var_dump($session->offsetGet('animal'));
+// exit;
 // ALERT CODE BIDON !!
 // Code à l'arrache pour rendre une vue ^^
 if (isset($_GET['p'])) {

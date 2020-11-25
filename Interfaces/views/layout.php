@@ -39,6 +39,7 @@
 
         <div class="starter-template" style="padding-top: 100px;">
 
+            <?= $flash->get(); ?>
 
             <?= $content; ?>
         </div>
