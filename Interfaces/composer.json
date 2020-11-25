@@ -1,0 +1,15 @@
+{
+    "name": "alex/interfaces",
+    "authors": [
+        {
+            "name": "Alexandre Caignard",
+            "email": "a.caignard@hotmail.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Grafikart\\": "Grafikart"
+        }
+    },
+    "require": {}
+}
